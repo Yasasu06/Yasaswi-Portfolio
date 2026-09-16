@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yasaswi Dutta</title>
+<meta name="description" content="Yasaswi Dutta — Data Analyst moving into Applied AI / Forward Deployed Engineering. Projects in RAG, cloud cost analysis, and entity resolution.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-name">
+      <span class="name">Yasaswi Dutta</span>
+      <span class="tagline">Data Analyst &rarr; Applied AI / Forward Deployed Engineer</span>
+    </div>
+    <nav class="header-links" aria-label="Contact and profile links">
+      <a href="https://www.linkedin.com/in/yasaswidutta/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/Yasasu06" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:yasaswidutta711@gmail.com">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <p>
+      I spent my early career as a data analyst working with ServiceNow, Azure DevOps, Power BI, and SQL.
+      Along the way I taught myself to build full AI products end to end — data pipelines, retrieval systems,
+      backend APIs, and the frontends that sit on top of them. I'm now looking for Forward Deployed Engineer
+      or Solutions Engineer roles where that combination of analyst instincts and hands-on build skills is useful.
+    </p>
+  </section>
+
+  <section class="projects" aria-label="Projects">
+
+    <article class="project-card">
+      <div class="project-header">
+        <h2>IT Support RAG Agent</h2>
+        <span class="status status-live">Live and fully functional</span>
+      </div>
+      <p class="pitch">
+        An AI assistant that answers IT support questions by retrieving and citing real enterprise incident tickets,
+        with adaptive retry and confidence scoring.
+      </p>
+      <p class="problem">
+        IT support teams repeatedly resolve similar tickets without a fast way to search past resolutions. This tool
+        lets someone describe an issue in plain language and get a grounded answer sourced directly from historical
+        tickets — with citations, not a hallucinated guess — including a live connection to a real ServiceNow instance.
+      </p>
+
+      <h3>Stack</h3>
+      <p class="stack">
+        Python, Streamlit, LangGraph, ChromaDB, OpenAI GPT-4o-mini + OpenAI embeddings, Microsoft Presidio,
+        ServiceNow REST API, pytest, GitHub Actions, Railway
+      </p>
+
+      <h3>Key features</h3>
+      <ul>
+        <li>4-agent LangGraph pipeline: Retrieval Agent (ChromaDB semantic search) &rarr; Answer Agent (grounded generation, cites ticket IDs) &rarr; Verification Agent (independent LLM fact-check) &rarr; Triage Agent (confidence/groundedness scoring, auto-escalation)</li>
+        <li>Adaptive retry: broadens and reruns the query (max 2 retries) when confidence is low — visible in the UI as a "Broadened search &middot; N retries" badge</li>
+        <li>Live ServiceNow REST API integration alongside 4 other ingested data sources</li>
+        <li>PII masking via Presidio before any data reaches the LLM</li>
+        <li>Session-scoped rate limiting (15 requests / 60s) and a feedback loop (Helpful/Not Helpful voting)</li>
+      </ul>
+
+      <h3>What I did</h3>
+      <ul>
+        <li>Diagnosed and resolved a live ServiceNow production outage end-to-end: isolated a 401 error via direct curl/Python REST tests, used ServiceNow's Background Script tool to inspect system properties, identified a newly-enforced Basic Auth role restriction, and fixed it</li>
+        <li>Documented fine-tuning as a closed architectural decision (not pursued further) after confirming OpenAI deprecated self-serve fine-tuning for new orgs — a deliberate scope decision, not a gap</li>
+        <li>Directed visual design iteration using Linear.app as a reference</li>
+        <li>Identified and specified the retry-visibility feature, surfacing an existing backend capability that was invisible to end users</li>
+      </ul>
+
+      <h3>Metrics</h3>
+      <p class="metrics">
+        90.0% eval accuracy (18/20) &middot; citation accuracy 1.0 &middot; refusal correctness 1.0 &middot; 51/51 tests passing &middot;
+        750 tickets across 4 ingested sources plus a 5th live ServiceNow connection &middot; ~10,000 lines of Python.
+        Groundedness 0.685 and relevance 0.69.
+      </p>
+
+      <div class="card-actions">
+        <a class="btn btn-primary" href="https://it-support-rag-agent-production.up.railway.app/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+        <a class="btn btn-secondary" href="https://github.com/Yasasu06/it-support-rag-agent" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-header">
+        <h2>Cloud Intelligence Platform</h2>
+        <span class="status status-live">Live and publicly accessible</span>
+      </div>
+      <p class="pitch">
+        AI-powered cloud cost analyzer that parses real billing CSVs and returns personalized waste recommendations
+        in under 60 seconds.
+      </p>
+      <p class="problem">
+        Startups spending $2K&ndash;$50K/month on cloud have no cheap way to understand where money is going. AWS bills
+        have 14+ line items across multiple services and no clear signal on what's waste. This tool does what a
+        FinOps consultant would do manually — takes the actual bill, finds the specific waste, and tells you what to
+        cut this week.
+      </p>
+
+      <h3>Stack</h3>
+      <p class="stack">
+        Next.js 14, TypeScript, Tailwind CSS, Framer Motion, DM Serif Display, Supabase (PostgreSQL + Auth + RLS),
+        Groq API (Llama 3.3 70B) via secure backend proxy, Recharts, Stripe (test mode), PostHog, AWS Pricing API,
+        Azure Pricing API, Vercel, GitHub Actions
+      </p>
+
+      <h3>Key features</h3>
+      <ul>
+        <li>Parses real billing CSVs from AWS, Azure, GCP, DigitalOcean, and Oracle — auto-detects provider with confidence score, shows rows parsed, services found, cost column detected</li>
+        <li>Groq AI generates personalized recommendations with specific dollar savings based on actual bill data — not industry averages</li>
+        <li>Bill history with memory — anonymous users get localStorage persistence, authenticated users get Supabase storage with month-over-month trend comparison</li>
+        <li>Compliance checker — pick industry and cloud provider, get instant framework requirements (HIPAA, SOC2, etc.) with specific services and cost estimates</li>
+        <li>Live pricing explorer — compares 12 providers in real time using AWS and Azure APIs plus verified static data for remaining providers</li>
+      </ul>
+
+      <h3>What I did</h3>
+      <ul>
+        <li>Identified that the original bill analyzer was using hardcoded fake data despite claiming real analysis — rebuilt the CSV parser from scratch to handle 5 real billing formats</li>
+        <li>Caught that the Groq API key was exposed in the browser bundle — moved all 9 Groq call sites to a single secure backend proxy route</li>
+        <li>Decided to cut 48 pages down to 3 focused tools based on which ones delivered a complete real-data experience</li>
+        <li>Wrote the full Supabase schema from scratch — 7 tables, RLS policies, handle_new_user trigger, anonymous-to-authenticated migration</li>
+        <li>Chose an editorial white design (DM Serif, no gradients) deliberately to differentiate from the generic dark-mode AI project look</li>
+      </ul>
+
+      <h3>Metrics</h3>
+      <p class="metrics">
+        Sample bill tested — 14 line items, 7 services, $2,617.57 total, parsed in under 5 seconds. Parser handles
+        6 billing formats (AWS CUR, AWS Cost Explorer wide-matrix, Azure Cost Management, GCP billing CSV,
+        DigitalOcean, Oracle CUR). No production metrics yet — no real users yet.
+      </p>
+
+      <div class="card-actions">
+        <a class="btn btn-primary" href="https://yasaswi-cloud.vercel.app/demo" target="_blank" rel="noopener noreferrer">Live Demo</a>
+        <a class="btn btn-secondary" href="https://github.com/Yasasu06/Cloud" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </article>
+
+    <article class="project-card">
+      <div class="project-header">
+        <h2>Entity Resolution Pipeline (Walmart&ndash;Amazon)</h2>
+        <span class="status status-progress">In Progress</span>
+      </div>
+      <p class="pitch">
+        A blocking-and-matching system that identifies when product listings from two independent retailers describe
+        the same real-world item, without ever using labeled training data.
+      </p>
+      <p class="problem">
+        Retailers routinely hold multiple records for the same product across different data sources, with no shared
+        ID and inconsistent formatting. Naively comparing every record pair is computationally infeasible at scale.
+        This project narrows an infeasible comparison space down to a manageable, high-recall candidate set, then
+        scores those candidates on multiple pieces of evidence — all without access to ground-truth labels during
+        development.
+      </p>
+
+      <h3>Stack</h3>
+      <p class="stack">
+        Python, DuckDB, Splink (probabilistic record linkage), Git/GitHub, pytest. Dataset: "Dirty Walmart-Amazon"
+        entity-matching benchmark (Amazon: 22,074 records; Walmart: 2,554 records).
+      </p>
+
+      <h3>Key features</h3>
+      <ul>
+        <li>Custom blocking layer (five rules): rare-token matching, identifier-pattern detection, brand-vocabulary harvesting, character n-gram matching, symmetric nearest-neighbor fallback — reduced 56.4 million possible pairs to ~564,000 candidates (99.1% reduction) with 100% record coverage on both source tables</li>
+        <li>Cross-field evidence extraction from full record text (rather than trusting original field structure, which is unreliable due to data corruption) — recovered usable identifier/brand evidence for 72&ndash;99% of records vs. 16&ndash;25% using original fields directly</li>
+        <li>Custom word-level title similarity comparison, built after verifying Splink's built-in "Jaccard" comparison operates on characters rather than words and isn't discriminative on ~100-character product titles</li>
+        <li>Strict data-governance policy: no labeled data read at any point during design, tuning, or threshold-setting — only at a single final evaluation. All required statistical parameters derived from label-free methods, documented as declared assumptions with sensitivity ranges</li>
+        <li>Every design decision, correction, and measured trade-off logged in a running decision record (26+ entries)</li>
+      </ul>
+
+      <h3>What I did</h3>
+      <ul>
+        <li>Made every design and threshold decision: dataset selection, blocking rule design and every revision (including diagnosing and fixing a rule generating ~80% noise from a text-normalization side effect), the choice to stay fully unsupervised, the matching feature set, and the title-comparison method after the default tool was found unsuitable</li>
+        <li>Code implementation was AI-assisted under my direction; I reviewed, questioned, and approved or rejected each design choice, requiring verification over assertion at every step — several proposed approaches were revised or reversed after being checked against real measurements</li>
+      </ul>
+
+      <h3>Metrics</h3>
+      <p class="metrics">
+        Blocking stage — 564,450 candidate pairs from 56,376,996 possible (99.1% reduction), 100% coverage on both
+        source tables. Matching accuracy/precision/recall not yet measured — the matcher has just been built and is
+        about to run for the first time.
+      </p>
+
+      <div class="card-actions">
+        <span class="status status-progress status-inline">In Progress &mdash; no live demo yet</span>
+        <a class="btn btn-secondary" href="https://github.com/Yasasu06/entity-resolution-project" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </article>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Yasaswi Dutta &middot; <a href="mailto:yasaswidutta711@gmail.com">yasaswidutta711@gmail.com</a></p>
+</footer>
+
+</body>
+</html>
